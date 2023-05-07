@@ -1,3 +1,20 @@
+-- Tables and keys
+-- Surrogate key == primary key with no mapping in real world
+-- Natural key, key that has mapping to the real world (Social Security number )
+
+-- Foreign key: link us to another db table
+
+-- Composite key: primary key consists of two columns
+
+-- Datatypes
+
+INT                 -- Whole numbers
+DECIMAL(M, NI)      -- Decimal Numbers - Exact Value
+VARCHAR(l)          -- String of text of length 1
+BLOB                -- Binary Large Object, Stores large data
+DATE                -- 'YYYY-MM-DD'
+TIMESTAMP           -- 'YYYY-MM-DD HH:MM:SS' - used for recording
+
 -- Creating Tables
 CREATE TABLE student (
     student_id INT PRIMARY KEY,
@@ -13,8 +30,10 @@ CREATE TABLE student (
 );
 
 DESCRIBE student;
+-- Describes data types from tables
 
 DROP TABLE student;
+-- Drops table
 
 ALTER TABLE student ADD gpa DECIMAL(3, 2);
 
@@ -22,24 +41,56 @@ ALTER TABLE student DROP COLUMN gpa;
 
 -- Inserting data
 SELECT * FROM student;
+-- Show inputted info into tables
+
+INSERT INTO student VALUES(1, 'Jack', 'Biology');
+INSERT INTO student VALUES(2, 'Kate', 'Sociology');
 
 INSERT INTO student(student_id, name) VALUES(3, 'Claire');
+
+-- Record with primary key already inserted won't be able to
+-- be submited
 
 -- C
 DROP TABLE student;
 
 CREATE TABLE student (
     student_id INT AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    major VARCHAR(20) UNIQUE,
+    PRIMARY KEY(student_id)
+);
+
+CREATE TABLE student (
+    student_id INT AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    major VARCHAR(20) UNIQUE,
+    PRIMARY KEY(student_id)
+);
+
+CREATE TABLE student (
+    student_id INT AUTO_INCREMENT,
     name VARCHAR(20),
-    major VARCHAR(20),
+    major VARCHAR(20) DEFAULT 'undecided',
     PRIMARY KEY(student_id)
 );
 
 SELECT * FROM student;
 
+INSERT INTO student VALUES(1, 'Jack', 'Biology');
+INSERT INTO student VALUES(2, 'Kate', 'Sociology');
+INSERT INTO student(student_id, name) VALUES(3, 'Claire');
+INSERT INTO student VALUES(4, 'Jack', 'Biology');
+INSERT INTO student VALUES(5, 'Mike', 'Computer Science');
+
+INSERT INTO student VALUES(3, NULL, 'Chemistry');
+-- **Name cannot be NULL
+
+INSERT INTO student VALUES(4, 'Jack', 'Biology');
+-- **Duplicate entry for key *major*
+
 INSERT INTO student(name, major) VALUES('Jack', 'Biology');
 INSERT INTO student(name, major) VALUES('Kate', 'Sociology');
-
 
 INSERT INTO student VALUES(2, 'Kate', 'Sociology');
 INSERT INTO student(student_id, name) VALUES(3, NULL, 'Chemistry');
@@ -51,6 +102,10 @@ SELECT * FROM student;
 
 UPDATE student
 SET major = 'Comp Sci'
+WHERE student_id = 4;
+
+UPDATE student
+SET major = 'Biochemistry'
 WHERE major = 'Biochemistry' OR major = 'Chemistry';
 
 UPDATE student
@@ -89,7 +144,7 @@ SELECT *
 FROM student
 WHERE major = 'Biology' OR name = 'Kate';
 
--- <, >, <=, >=, =, <>, AND, OR 
+-- <, >, <=, >=, =, <> (not equal to), AND, OR 
 
 SELECT *
 FROM student
